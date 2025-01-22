@@ -1,35 +1,45 @@
-{% set version = "1.0.0" %}
+{% set version = "1.2.0" %}
 
 package:
   name: pamela
   version: {{ version }}
 
 source:
-  fn: pamela-{{ version }}.tar.gz
   url: https://pypi.io/packages/source/p/pamela/pamela-{{ version }}.tar.gz
-  md5: 5fc14f5275383ed8bdd509007af0323d
+  sha256: 0ea6e2a99dded8c7783a4a06f2d31f5bdcad894d79101e8f09322e387a34aacf
 
 build:
   number: 0
-  noarch: python
-  script: pip install --no-deps .
+  skip: True  # [py<38 or win]
+  script: pip install --no-deps --ignore-installed --no-build-isolation .
 
 requirements:
-  build:
+  host:
     - python
     - pip
-
+    - wheel
+    - setuptools
+    - setuptools_scm
   run:
     - python
 
 test:
+  requires:
+    - pip
   imports:
     - pamela
+  commands:
+    - pip check
 
 about:
   home: https://github.com/minrk/pamela
   license: MIT
+  license_family: MIT
+  license_file: COPYING
   summary: PAM interface using ctypes
+  description: "Pamela: yet another Python wrapper for PAM"
+  doc_url: https://github.com/minrk/pamela/blob/main/README.md
+  dev_url: https://github.com/minrk/pamela
 
 extra:
   recipe-maintainers:
